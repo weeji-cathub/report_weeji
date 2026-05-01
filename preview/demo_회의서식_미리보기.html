@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>사례 점검 회의 서식 — 미리보기 v6</title>
+<style>
+  /* ============================================================
+     v6 — 카드 기반 클린 디자인 (발표 가시성 우선)
+     변경 핵심:
+     · 그리드 라인 흉내 제거 → 부드러운 카드 분리
+     · 모든 라벨 너비 통일 (--label-width: 120px)
+     · 라벨은 한 줄 고정 (white-space: nowrap)
+     · 진단/환자정보/보고정보 등 짧은 항목은 inline-pairs로 압축
+     · 직업력/유해인자 등 긴 텍스트는 큰 영역으로 명확히 강조
+     · 수정 가능(유해인자)·판정 입력은 노란 강조로 시각적 차별
+  ============================================================ */
+  :root {
+    --c-page: #f3f4f6;
+    --c-card: #ffffff;
+    --c-border: #e5e7eb;
+    --c-divider: #f3f4f6;
+    --c-text: #111827;
+    --c-text-muted: #6b7280;
+    --c-label: #4b5563;
+    --c-accent: #2563eb;
+    --c-warn: #b45309;
+    --c-edit-bg: #fffbeb;
+    --c-edit-border: #f59e0b;
+    --c-edit-bar: #fef3c7;
+    --c-disabled: #d1d5db;
+    --font-base: 17px;
+    --label-width: 120px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--c-page);
+    color: var(--c-text);
+    font-family: "Pretendard", "Malgun Gothic", "맑은 고딕", system-ui, -apple-system, sans-serif;
+    font-size: var(--font-base);
+    line-height: 1.5;
+  }
+  code, .mono { font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+
+  .page {
+    max-width: 1180px;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  /* ───── 도구막대 ───── */
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 18px;
+    background: var(--c-card);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .toolbar .grow { flex: 1; }
+  .toolbar button {
+    font: inherit;
+    padding: 6px 14px;
+    border: 1px solid var(--c-border);
+    background: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .toolbar button:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-color: var(--c-border);
+  }
+  .toolbar input[type="number"] {
+    font: inherit;
+    width: 80px;
+    padding: 5px 10px;
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+  }
+  .toolbar .font-ctl {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--c-text-muted);
+  }
+  .toolbar .font-ctl .level {
+    font-size: 0.85em;
+    min-width: 30px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ───── 사례 헤더(맨 위) ───── */
+  .hero {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--c-card);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .hero .num {
+    font-size: 1.75em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .hero .num small {
+    font-size: 0.55em;
+    font-weight: 600;
+    color: var(--c-text-muted);
+    margin-right: 6px;
+  }
+  .hero .index {
+    font-size: 0.95em;
+    color: var(--c-text);
+    background: #eef2ff;
+    color: #3730a3;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .hero .index small {
+    color: #6366f1;
+    font-weight: 500;
+    margin-right: 6px;
+  }
+  .hero .spacer { flex: 1; }
+  .hero .status {
+    font-size: 0.85em;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  /* ───── 카드 (섹션) ───── */
+  section.card {
+    background: var(--c-card);
+    border-radius: 12px;
+    padding: 18px 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  section.card > h2 {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: var(--c-text-muted);
+    margin: 0 0 14px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--c-divider);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  section.card > h2 .h2-search {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  section.card > h2 .badge {
+    font-size: 0.85em;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+  section.card > h2 .badge.edit {
+    background: var(--c-edit-bar);
+    color: #92400e;
+  }
+
+  /* ───── 라벨/값 그리드 (일관된 라벨 너비) ───── */
+  .kv-list { display: grid; gap: 12px; }
+  .kv {
+    display: grid;
+    grid-template-columns: var(--label-width) 1fr;
+    align-items: baseline;
+    gap: 16px;
+    min-height: 30px;
+  }
+  .kv > label {
+    font-weight: 700;
+    color: var(--c-label);
+    font-size: 0.95em;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .kv > .v {
+    color: var(--c-text);
+    font-size: 1em;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+  .kv > .v.muted { color: var(--c-text-muted); font-style: italic; }
+  .kv > .v.code { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-weight: 600; }
+  .kv.stack { align-items: start; }
+  .kv.stack .v-block { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ───── 인라인 페어 (한 줄에 여러 라벨:값) ───── */
+  .inline-pairs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    align-items: baseline;
+  }
+  .inline-pairs > .pair {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .inline-pairs .k {
+    font-weight: 700;
+    color: var(--c-label);
+    font-size: 0.92em;
+    white-space: nowrap;
+  }
+  .inline-pairs .v { color: var(--c-text); }
+  .inline-pairs .v.code { font-family: ui-monospace, Consolas, monospace; font-weight: 600; }
+  .inline-pairs .v.muted { color: var(--c-text-muted); font-style: italic; }
+
+  /* ───── 검색·유사사례 (헤더 옆 또는 인라인) ───── */
+  input.search {
+    font: inherit;
+    font-size: 0.88em;
+    padding: 5px 10px;
+    width: 160px;
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+    background: #fff;
+  }
+  button.similar {
+    font: inherit;
+    font-size: 0.85em;
+    padding: 5px 12px;
+    background: #fff;
+    color: var(--c-accent);
+    border: 1px solid var(--c-accent);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  button.similar:hover { background: var(--c-accent); color: #fff; }
+
+  .search-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* ───── 큰 텍스트 영역 (직업력/유해인자) ───── */
+  .big-text {
+    font-size: 1.02em;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    margin: 0;
+    padding: 14px 18px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border-left: 3px solid #d1d5db;
+    color: var(--c-text);
+  }
+  .big-text:empty::before {
+    content: "(미기재)";
+    color: var(--c-text-muted);
+    font-style: italic;
+  }
+
+  /* ───── 수정 가능 (유해인자) ───── */
+  section.card.editable { background: linear-gradient(180deg, var(--c-edit-bg), #fff 60%); }
+  textarea.autogrow {
+    width: 100%;
+    min-height: 56px;
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 1.02em;
+    line-height: 1.75;
+    border: 1px solid var(--c-edit-border);
+    border-radius: 8px;
+    background: #fff;
+    white-space: pre-wrap;
+    resize: vertical;
+    overflow: hidden;
+  }
+  textarea.autogrow:focus {
+    outline: 2px solid var(--c-accent);
+    outline-offset: -1px;
+    border-color: var(--c-accent);
+  }
+
+  /* ───── 판정 입력 (질환/업무관련성/유해인자분류) ───── */
+  section.card.judgment { border-left: 4px solid var(--c-edit-border); }
+  .judgment-list { display: grid; gap: 14px; }
+  .judgment-row {
+    display: grid;
+    grid-template-columns: var(--label-width) 1fr 220px;
+    gap: 14px;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .judgment-row > label {
+    font-weight: 700;
+    color: var(--c-label);
+    font-size: 0.95em;
+    white-space: nowrap;
+  }
+  .judgment-row select {
+    font: inherit;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid var(--c-edit-border);
+    border-radius: 6px;
+    background: var(--c-edit-bg);
+    color: var(--c-text);
+  }
+  .judgment-row select:focus {
+    outline: 2px solid var(--c-accent);
+    outline-offset: -1px;
+  }
+  .judgment-row .existing {
+    font-size: 0.92em;
+    color: var(--c-text-muted);
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    border-left: 3px solid #fbbf24;
+  }
+  .judgment-row .existing.empty {
+    color: #9ca3af;
+    font-style: italic;
+    border-left-color: var(--c-divider);
+    background: transparent;
+  }
+  .judgment-row .existing .pill {
+    font-size: 0.78em;
+    background: var(--c-edit-bar);
+    color: #92400e;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  /* ───── 액션 영역 ───── */
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+    padding-bottom: 24px;
+  }
+  .actions button {
+    font: inherit;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.98em;
+  }
+  .actions .save {
+    background: var(--c-accent);
+    color: #fff;
+    border: 1px solid var(--c-accent);
+  }
+  .actions .save:hover { background: #1d4ed8; }
+  .actions .reset {
+    background: #fff;
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+  }
+
+  /* 좁은 화면 대응 */
+  @media (max-width: 720px) {
+    :root { --label-width: 95px; }
+    .judgment-row { grid-template-columns: var(--label-width) 1fr; }
+    .judgment-row .existing { grid-column: 1 / -1; }
+  }
+
+  @media print {
+    .toolbar, .actions, button.similar, input.search, .h2-search { display: none; }
+    section.card.editable { background: #fff; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ========================= 도구막대 ========================= -->
+  <header class="toolbar">
+    <strong>사례 조회</strong>
+    <span style="color: var(--c-text-muted)">연번</span>
+    <input type="number" id="caseNo" value="81">
+    <button>조회</button>
+    <button>← 이전</button>
+    <button>다음 →</button>
+    <span class="grow"></span>
+    <span class="font-ctl">
+      글씨
+      <button id="fontMinus" onclick="adjustFont(-1)">−</button>
+      <span class="level" id="fontLevel">1/4</span>
+      <button id="fontPlus" onclick="adjustFont(+1)">＋</button>
+    </span>
+  </header>
+
+  <!-- ========================= 사례 헤더 ========================= -->
+  <section class="hero">
+    <span class="num"><small>연번</small>1</span>
+    <span class="index"><small>색인</small>DEMO-0001</span>
+    <span class="spacer"></span>
+    <span class="status">데모</span>
+  </section>
+
+  <!-- ========================= 환자 ========================= -->
+  <section class="card">
+    <h2>환자</h2>
+    <div class="inline-pairs">
+      <span class="pair"><span class="k">성별</span><span class="v">미상</span></span>
+      <span class="pair"><span class="k">연령대</span><span class="v">—</span></span>
+      <span class="pair"><span class="k">이름</span><span class="v muted">(미기재)</span></span>
+    </div>
+  </section>
+
+  <!-- ========================= 직업·산업 ========================= -->
+  <section class="card">
+    <h2>직업 · 산업</h2>
+    <div class="kv-list">
+      <div class="kv">
+        <label>산업분류</label>
+        <span class="v">73201_인테리어 디자인업(추정)</span>
+      </div>
+      <div class="kv">
+        <label>직업코드</label>
+        <span class="v code">51021</span>
+      </div>
+      <div class="kv stack">
+        <label>직업분류</label>
+        <div class="v-block">
+          <div class="v">건축자재 영업원(추정) ; 인테리어 하는 일</div>
+          <div class="search-actions">
+            <input type="search" class="search" placeholder="직업분류 키워드 검색">
+            <button class="similar" data-field="직업분류표">유사사례</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= 보고 정보 ========================= -->
+  <section class="card">
+    <h2>보고 정보</h2>
+    <div class="inline-pairs">
+      <span class="pair"><span class="k">보고유형</span><span class="v">단순보고</span></span>
+      <span class="pair"><span class="k">보고일</span><span class="v">2026-01-01</span></span>
+      <span class="pair"><span class="k">보고병원</span><span class="v">데모병원</span></span>
+      <span class="pair"><span class="k">병원등록번호</span><span class="v code">0000000</span></span>
+      <span class="pair">
+        <span class="k">보고자</span>
+        <span class="v">데모담당자</span>
+        <input type="search" class="search" placeholder="보고자 키워드">
+        <button class="similar" data-field="보고자">유사사례</button>
+      </span>
+    </div>
+  </section>
+
+  <!-- ========================= 직업력 및 병력 ========================= -->
+  <section class="card">
+    <h2>
+      직업력 및 병력
+      <span class="h2-search">
+        <input type="search" class="search" placeholder="키워드 검색">
+        <button class="similar" data-field="직업력 및 병력">유사사례</button>
+      </span>
+    </h2>
+    <p class="big-text">데모 텍스트입니다.
+실제 사례 정보는 포함하지 않습니다.</p>
+  </section>
+
+  <!-- ========================= 유해인자 (수정 가능) ========================= -->
+  <section class="card editable">
+    <h2>
+      유해인자
+      <span class="badge edit">수정 가능</span>
+      <span class="h2-search">
+        <input type="search" class="search" placeholder="키워드 검색">
+        <button class="similar" data-field="유해인자">유사사례</button>
+      </span>
+    </h2>
+    <textarea
+      class="autogrow"
+      data-field="유해인자"
+      placeholder="유해인자를 입력하세요…"></textarea>
+  </section>
+
+  <!-- ========================= 진단 ========================= -->
+  <section class="card">
+    <h2>진단</h2>
+    <div class="kv-list">
+      <div class="kv stack">
+        <label>진단명</label>
+        <div class="v-block">
+          <div class="v">상세불명의 건선</div>
+          <div class="search-actions">
+            <input type="search" class="search" placeholder="진단명 키워드 검색">
+            <button class="similar" data-field="최종진단명">유사사례</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inline-pairs" style="margin-top: 14px;">
+      <span class="pair"><span class="k">진단코드</span><span class="v code">L40.9</span></span>
+      <span class="pair"><span class="k">확진여부</span><span class="v">의증</span></span>
+    </div>
+  </section>
+
+  <!-- ========================= 판정 입력 ========================= -->
+  <section class="card judgment">
+    <h2>판정 입력 <span class="badge edit">사례 회의 결과 입력</span></h2>
+    <div class="judgment-list">
+
+      <div class="judgment-row">
+        <label>질환 및 발생형태</label>
+        <select data-field="질환 및 발생형태">
+          <option value="" selected>— 선택 —</option>
+          <option>뇌혈관 질병 또는 심장 질병</option>
+          <option>근골격계 질병</option>
+          <option>호흡기계 질병</option>
+          <option>신경계 질병</option>
+          <option>정신 질병</option>
+          <option>혈액 및 조혈기계 질병</option>
+          <option>피부질병</option>
+          <option>눈 또는 귀 질병</option>
+          <option>간 질병</option>
+          <option>감염성 질병</option>
+          <option>직업성 암</option>
+          <option>급성중독 등 화학적 요인에 의한 질병</option>
+          <option>물리적 요인에 의한 질병</option>
+          <option>기타 질병</option>
+        </select>
+        <div class="existing" data-existing=""><span class="pill">기존값</span><span class="existing-value"></span></div>
+      </div>
+
+      <div class="judgment-row">
+        <label>업무관련성</label>
+        <select data-field="업무관련성">
+          <option value="" selected>— 선택 —</option>
+          <option>확실(Definite)</option>
+          <option>가능성 높음(Probable)</option>
+          <option>가능성 있음(Possible)</option>
+          <option>가능성 낮음(Unlikely)</option>
+          <option>조사분석팀 확인 필요사항</option>
+        </select>
+        <div class="existing" data-existing=""><span class="pill">기존값</span><span class="existing-value"></span></div>
+      </div>
+
+      <div class="judgment-row">
+        <label>유해인자분류</label>
+        <select data-field="유해인자분류">
+          <option value="" selected>— 선택 —</option>
+          <option>유기화합물</option>
+          <option>금속류</option>
+          <option>산 및 알카리류</option>
+          <option>가스 상태 물질류</option>
+          <option>분진, 흄 (금속 외)</option>
+          <option>물리적 인자</option>
+          <option>근골격계 부담요인</option>
+          <option>생물학적 요인</option>
+          <option>사회심리적 요인</option>
+          <option>기타</option>
+          <option>미상</option>
+        </select>
+        <div class="existing" data-existing=""><span class="pill">기존값</span><span class="existing-value"></span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================= 액션 ========================= -->
+  <div class="actions">
+    <button class="reset">입력 초기화</button>
+    <button class="save">사례 점검 입력 저장</button>
+  </div>
+
+</div>
+
+<script>
+  // ===== 폰트 크기 4단계 =====
+  const FONT_LEVELS = [17, 19, 21, 23];
+  let fontIdx = 0;
+  function adjustFont(d) {
+    fontIdx = Math.max(0, Math.min(FONT_LEVELS.length - 1, fontIdx + d));
+    document.documentElement.style.setProperty("--font-base", FONT_LEVELS[fontIdx] + "px");
+    document.getElementById("fontLevel").textContent = (fontIdx + 1) + "/" + FONT_LEVELS.length;
+    document.getElementById("fontMinus").disabled = (fontIdx === 0);
+    document.getElementById("fontPlus").disabled  = (fontIdx === FONT_LEVELS.length - 1);
+  }
+  adjustFont(0);
+
+  // ===== 기존값 비어있을 때 영역 흐리게 + 안내 =====
+  document.querySelectorAll(".existing").forEach(el => {
+    const v = (el.dataset.existing || "").trim();
+    if (!v) {
+      el.classList.add("empty");
+      el.innerHTML = "기존 입력값 없음";
+    } else {
+      el.querySelector(".existing-value").textContent = v;
+    }
+  });
+
+  // ===== textarea 자동 높이 =====
+  function autoGrow(ta) {
+    ta.style.height = "auto";
+    ta.style.height = (ta.scrollHeight + 2) + "px";
+  }
+  document.querySelectorAll("textarea.autogrow").forEach(ta => {
+    autoGrow(ta);
+    ta.addEventListener("input", () => autoGrow(ta));
+  });
+
+  // ===== 유사사례 버튼 (데모) =====
+  document.querySelectorAll("button.similar").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const field = btn.dataset.field;
+      const parent = btn.parentElement;
+      const input = parent.querySelector("input.search");
+      const keyword = input ? input.value.trim() : "";
+      alert(
+        `[유사사례 검색 — 데모]\n\n` +
+        `검색 항목: ${field}\n` +
+        `키워드: ${keyword || "(비어있음)"}\n\n` +
+        `▶ 다음 단계에서 구현 예정:\n` +
+        `  1) '대상' 시트에서 ${field} 컬럼이 키워드를 포함한 사례 검색\n` +
+        `  2) 보고일 최신순 5개 새 창으로 리스트 표시\n` +
+        `     (보고자/직업력/질환분류/진단명/진단코드/업무관련성/유해인자분류)\n` +
+        `  3) 리스트에서 클릭 → 회의서식 형태로 새 창 표시`
+      );
+    });
+  });
+
+  // ===== 저장 (데모) =====
+  document.querySelector(".actions .save").addEventListener("click", () => {
+    alert(
+      "[저장 — 데모]\n\n" +
+      "현재는 UI 목업 단계라 실제 저장은 동작하지 않습니다.\n" +
+      "(추후 real 버전에서만 서버 연동 예정)"
+    );
+  });
+
+  // ===== 입력 초기화 =====
+  document.querySelector(".actions .reset").addEventListener("click", () => {
+    document.querySelectorAll("select[data-field]").forEach(s => s.value = "");
+  });
+</script>
+</body>
+</html>
