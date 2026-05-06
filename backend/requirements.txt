@@ -1,0 +1,4 @@
+xlwings>=0.31
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pywin32>=306
