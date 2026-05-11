@@ -1,0 +1,52 @@
+● Project Context Summary (이어서 사용)
+
+  Tech Stack                                                                                          
+                                                                                                        - Vanilla HTML/CSS/JS (no framework)                                                                
+  - CSS variables (--c-*), flex/grid layout                                                           
+  - 폰트: Pretendard / Malgun Gothic, 4단계 글씨크기 토글   
+
+  Files (C:\dev\report\preview\)
+
+  - demo_회의서식_미리보기.html — v6 1단 (현재 demo 진행본)
+  - real_회의서식_미리보기.html — real 데이터용 (이번 세션에서 미변경)
+  - (2단)회의서식_미리보기.html — 2단 실험본
+  - (2단)회의서식_최종.html — 현재 작업 중 최종본
+
+  Layout Structure (최종본 기준)
+
+  - .page.two-col max-width 1600px, 1단 max-width 1180px
+  - 상단 toolbar (조회/이전/다음/글씨조절)
+  - Full-width hero: 연번 + 색인 + 상태 + 환자정보(성별/연령대/이름) 한 줄
+  - .two-column-layout (CSS Grid 2col, <1100px → 1단 자동)
+  - 하단 actions (입력초기화 / 저장)
+
+  Card Placement Rules (최종 2단)
+
+  - 왼쪽 컬럼: 직업·산업 → 보고정보 → 진단 → 유해인자
+  - 오른쪽 컬럼: 직업력 및 병력 → 판정 입력
+
+  Card UI 패턴
+
+  - 짧은 필드: .inline-pairs > .pair (.k + .v) — 한 줄 정렬 (flex-wrap: nowrap + overflow-x: auto)    
+  - 긴 텍스트: .big-text (회색 바)
+  - 수정 가능: .card.editable + textarea.autogrow (노랑 강조)
+  - 판정 select: .card.judgment + .judgment-row (라벨 / select / 기존값 3열)
+  - 라벨 배경: #f3f4f6 통일 (기존 page 색 재사용)
+
+  색상 (기존만 사용 중, 추가 금지)
+
+  --c-page #f3f4f6, --c-card #fff, --c-border #e5e7eb, --c-text #111827, --c-label #4b5563, --c-accent
+   #2563eb, --c-edit-bg #fffbeb, --c-edit-border #f59e0b, --c-edit-bar #fef3c7
+
+  Excel Sync 원칙
+
+  - SSoT는 회의서식_매크로_2026.xlsm, 웹앱은 인터페이스
+  - backend/DB 미수정 (이번 세션 frontend 전용)
+  - 유사사례·저장 버튼은 현재 alert 데모 (서버 연동은 추후)
+
+  작업 규칙 (재확인)
+
+  - 이 채팅은 frontend UI/UX 전용
+  - 전체 HTML 재작성/refactor/CSS 전면수정 금지 → PATCH MODE
+  - 기존 카드/CSS 재사용, 새 색상·디자인 생성 금지
+  - 수정 후 파일 저장 + 브라우저 preview 자동 열기

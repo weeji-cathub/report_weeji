@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>사례 점검 회의 서식 — 미리보기 v6</title>
+<title>사례 점검 회의 서식 — 최종 (2단)</title>
 <style>
   /* ============================================================
      v6 — 카드 기반 클린 디자인 (발표 가시성 우선)
@@ -48,6 +48,28 @@
     max-width: 1180px;
     margin: 24px auto;
     padding: 0 16px;
+  }
+
+  /* MODIFIED: 2단 레이아웃 (실험용) */
+  .page.two-col { max-width: 1600px; }
+  .two-column-layout {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .two-column-layout > .col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+  .two-column-layout > .col > section.card,
+  .two-column-layout > .col > section.hero {
+    margin-bottom: 0;
+  }
+  @media (max-width: 1100px) {
+    .two-column-layout { grid-template-columns: 1fr; }
   }
 
   /* ───── 도구막대 ───── */
@@ -408,14 +430,14 @@
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page two-col">
 
   <!-- ========================= 도구막대 ========================= -->
   <header class="toolbar">
     <strong>사례 조회</strong>
     <span style="color: var(--c-text-muted)">연번</span>
-    <input type="number" id="caseNo" value="81">
-    <button>조회</button>
+    <input type="number" id="caseNo" value="1">
+    <button id="btnLookup">조회</button>
     <button>← 이전</button>
     <button>다음 →</button>
     <span class="grow"></span>
@@ -427,18 +449,22 @@
     </span>
   </header>
 
-  <!-- ========================= 사례 헤더 + 환자 (MODIFIED: 카드 병합) ========================= -->
+  <!-- ========================= 사례 헤더 + 환자 (MODIFIED: 2단 위 full-width 이동) ========================= -->
   <section class="hero">
-    <span class="num"><small>연번</small>1</span>
-    <span class="index"><small>색인</small>DEMO-0001</span>
+    <span class="num"><small>연번</small><span data-display="caseno">1</span></span>
+    <span class="index"><small>색인</small><span data-display="index">—</span></span>
     <span class="status">데모</span>
     <span class="spacer"></span>
     <div class="inline-pairs">
-      <span class="pair"><span class="k">성별</span><span class="v">미상</span></span>
-      <span class="pair"><span class="k">연령대</span><span class="v">—</span></span>
-      <span class="pair"><span class="k">이름</span><span class="v muted">(미기재)</span></span>
+      <span class="pair"><span class="k">성별</span><span class="v" data-display="gender">—</span></span>
+      <span class="pair"><span class="k">연령대</span><span class="v" data-display="age">—</span></span>
+      <span class="pair"><span class="k">이름</span><span class="v muted" data-display="name">—</span></span>
     </div>
   </section>
+
+  <!-- MODIFIED: 2단 레이아웃 wrapper 시작 -->
+  <div class="two-column-layout">
+  <div class="col col-left">
 
   <!-- ========================= 직업·산업 ========================= -->
   <!-- MODIFIED -->
@@ -449,55 +475,39 @@
       <!-- MODIFIED -->
       <span class="pair">
         <span class="k">산업분류</span>
-        <span class="v">73201_인테리어 디자인업(추정)</span>
+        <span class="v" data-display="ksic">—</span>
       </span>
       <!-- MODIFIED -->
       <span class="pair">
         <span class="k">직업코드</span>
-        <span class="v code">51021</span>
+        <span class="v code" data-display="ksco_code">—</span>
       </span>
       <!-- MODIFIED -->
       <span class="pair">
         <span class="k">직업분류</span>
-        <span class="v">건축자재 영업원(추정) ; 인테리어 하는 일</span>
+        <span class="v" data-display="ksco">—</span>
         <input type="search" class="search" placeholder="직업분류 키워드 검색">
-        <button class="similar" data-field="직업분류표">유사사례</button>
+        <button class="similar" data-field="대상자직업&#10;(한국직업분류표)(KSCO)_제7차">유사사례</button>
       </span>
     </div>
   </section>
 
-  <!-- ========================= 보고 정보 ========================= -->
+  <!-- ========================= 진단 (MODIFIED: 좌측 컬럼으로 이동) ========================= -->
   <section class="card">
-    <h2>보고 정보</h2>
-    <!-- MODIFIED: 한 줄 정렬 (flex-wrap: nowrap) -->
+    <h2>진단</h2>
     <div class="inline-pairs" style="flex-wrap: nowrap; overflow-x: auto;">
-      <span class="pair"><span class="k">보고유형</span><span class="v">단순보고</span></span>
-      <span class="pair"><span class="k">보고일</span><span class="v">2026-01-01</span></span>
-      <span class="pair"><span class="k">보고병원</span><span class="v">데모병원</span></span>
-      <span class="pair"><span class="k">병원등록번호</span><span class="v code">0000000</span></span>
+      <span class="pair"><span class="k">진단코드</span><span class="v code" data-display="diagcode">—</span></span>
+      <span class="pair"><span class="k">확진여부</span><span class="v" data-display="diagconfirm">—</span></span>
       <span class="pair">
-        <span class="k">보고자</span>
-        <span class="v">데모담당자</span>
-        <input type="search" class="search" placeholder="보고자 키워드">
-        <button class="similar" data-field="보고자">유사사례</button>
+        <span class="k">진단명</span>
+        <span class="v" data-display="diagname">—</span>
+        <input type="search" class="search" placeholder="진단명 키워드 검색">
+        <button class="similar" data-field="최종진단명(의증)">유사사례</button>
       </span>
     </div>
   </section>
 
-  <!-- ========================= 직업력 및 병력 ========================= -->
-  <section class="card">
-    <h2>
-      직업력 및 병력
-      <span class="h2-search">
-        <input type="search" class="search" placeholder="키워드 검색">
-        <button class="similar" data-field="직업력 및 병력">유사사례</button>
-      </span>
-    </h2>
-    <p class="big-text">데모 텍스트입니다.
-실제 사례 정보는 포함하지 않습니다.</p>
-  </section>
-
-  <!-- ========================= 유해인자 (수정 가능) ========================= -->
+  <!-- ========================= 유해인자 (MODIFIED: 좌측 컬럼으로 이동) ========================= -->
   <section class="card editable">
     <h2>
       유해인자
@@ -513,20 +523,35 @@
       placeholder="유해인자를 입력하세요…"></textarea>
   </section>
 
-  <!-- ========================= 진단 ========================= -->
-  <!-- MODIFIED: 한 줄 정렬 (inline-pairs 통합) -->
+  </div><!-- /col-left -->
+  <div class="col col-right">
+
+  <!-- ========================= 보고 정보 (MODIFIED: 우측 컬럼 상단으로 이동) ========================= -->
   <section class="card">
-    <h2>진단</h2>
-    <div class="inline-pairs" style="flex-wrap: nowrap; overflow-x: auto;">
-      <span class="pair"><span class="k">진단코드</span><span class="v code">L40.9</span></span>
-      <span class="pair"><span class="k">확진여부</span><span class="v">의증</span></span>
+    <h2>보고 정보</h2>
+    <div class="inline-pairs">
+      <span class="pair"><span class="k">보고유형</span><span class="v" data-display="reporttype">—</span></span>
+      <span class="pair"><span class="k">보고일</span><span class="v" data-display="reportdate">—</span></span>
+      <span class="pair"><span class="k">보고병원</span><span class="v" data-display="hospital">—</span></span>
       <span class="pair">
-        <span class="k">진단명</span>
-        <span class="v">상세불명의 건선</span>
-        <input type="search" class="search" placeholder="진단명 키워드 검색">
-        <button class="similar" data-field="최종진단명">유사사례</button>
+        <span class="k">보고자</span>
+        <span class="v" data-display="reporter">—</span>
+        <input type="search" class="search" placeholder="보고자 키워드">
+        <button class="similar" data-field="보고인">유사사례</button>
       </span>
     </div>
+  </section>
+
+  <!-- ========================= 직업력 및 병력 ========================= -->
+  <section class="card">
+    <h2>
+      직업력 및 병력
+      <span class="h2-search">
+        <input type="search" class="search" placeholder="키워드 검색">
+        <button class="similar" data-field="직업력 및 병력">유사사례</button>
+      </span>
+    </h2>
+    <p class="big-text" data-display="career">—</p>
   </section>
 
   <!-- ========================= 판정 입력 ========================= -->
@@ -591,6 +616,9 @@
     </div>
   </section>
 
+  </div><!-- /col-right -->
+  </div><!-- /two-column-layout -->
+
   <!-- ========================= 액션 ========================= -->
   <div class="actions">
     <button class="reset">입력 초기화</button>
@@ -605,7 +633,8 @@
   let fontIdx = 0;
   function adjustFont(d) {
     fontIdx = Math.max(0, Math.min(FONT_LEVELS.length - 1, fontIdx + d));
-    document.documentElement.style.setProperty("--font-base", FONT_LEVELS[fontIdx] + "px");
+    const scope = document.querySelector('[data-display="career"]')?.closest("section");
+    if (scope) scope.style.fontSize = FONT_LEVELS[fontIdx] + "px";
     document.getElementById("fontLevel").textContent = (fontIdx + 1) + "/" + FONT_LEVELS.length;
     document.getElementById("fontMinus").disabled = (fontIdx === 0);
     document.getElementById("fontPlus").disabled  = (fontIdx === FONT_LEVELS.length - 1);
@@ -633,39 +662,268 @@
     ta.addEventListener("input", () => autoGrow(ta));
   });
 
-  // ===== 유사사례 버튼 (데모) =====
+  // ===== 유사사례 → GET /search =====
+  function escapeHtml(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  }
+  function fmtDate(v) {
+    if (typeof v === "string" && v.includes("T")) return v.slice(0, 10);
+    return v == null ? "" : String(v);
+  }
+  function fmtNo(v) {
+    if (typeof v === "number" && Number.isInteger(v)) return String(v);
+    if (typeof v === "number") return String(Math.floor(v));
+    return v == null ? "" : String(v);
+  }
+  function getSearchKeyword(btn) {
+    const parent = btn.parentElement;
+    const input = parent && parent.querySelector("input.search");
+    if (input && input.value.trim()) return input.value.trim();
+    const pair = btn.closest(".pair");
+    if (pair) {
+      const v = pair.querySelector(".v");
+      const txt = v ? v.textContent.trim() : "";
+      if (txt && txt !== "—") return txt;
+    }
+    return "";
+  }
+  function buildSearchModal(results, field, keyword) {
+    document.getElementById("__similarModal")?.remove();
+    const overlay = document.createElement("div");
+    overlay.id = "__similarModal";
+    Object.assign(overlay.style, {
+      position: "fixed", inset: "0", background: "rgba(0,0,0,0.4)",
+      display: "flex", alignItems: "center", justifyContent: "center", zIndex: "9999",
+    });
+    const panel = document.createElement("div");
+    Object.assign(panel.style, {
+      background: "#fff", borderRadius: "10px",
+      width: "min(1100px, 92vw)", maxHeight: "85vh", overflow: "auto",
+      boxShadow: "0 12px 40px rgba(0,0,0,0.25)", padding: "16px 20px",
+    });
+    const head = document.createElement("div");
+    head.style.cssText = "display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;";
+    head.innerHTML = `<strong style="font-size:1.05em">유사사례 검색 결과</strong>
+      <span style="color:#6b7280;font-size:0.9em">${escapeHtml(field)} · "${escapeHtml(keyword)}" · ${results.length}건</span>
+      <span style="flex:1"></span>
+      <button type="button" id="__similarClose" style="font:inherit;border:1px solid #e5e7eb;background:#fff;border-radius:6px;padding:4px 12px;cursor:pointer">닫기</button>`;
+    panel.appendChild(head);
+    if (!results.length) {
+      const empty = document.createElement("div");
+      empty.style.cssText = "padding:20px;color:#6b7280;text-align:center";
+      empty.textContent = "결과 없음";
+      panel.appendChild(empty);
+    } else {
+      const list = document.createElement("div");
+      list.style.cssText = "display:flex;flex-direction:column;gap:6px";
+      results.forEach(r => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.style.cssText = "text-align:left;font:inherit;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px;cursor:pointer";
+        const _ksco = r["대상자직업\n(한국직업분류표)(KSCO)_제7차"] ?? "";
+        const _diag = r["최종진단명(의증)"] ?? "";
+        const _hazard = r["유해인자"] ?? "";
+        const _reporter = r["보고인"] ?? "";
+        const _jparts = [];
+        if (r["질환 및 발생형태"]) _jparts.push(`질환=${r["질환 및 발생형태"]}`);
+        if (r["업무관련성"])       _jparts.push(`업무관련성=${r["업무관련성"]}`);
+        if (r["유해인자분류"])     _jparts.push(`분류=${r["유해인자분류"]}`);
+        const _judgment = _jparts.join(" · ");
+        row.innerHTML = `
+          <div style="display:grid;grid-template-columns:96px 1fr;gap:4px 12px;font-size:0.93em">
+            <span style="color:#6b7280">직업분류</span><span>${escapeHtml(_ksco)}</span>
+            <span style="color:#6b7280">진단명</span><span>${escapeHtml(_diag)}</span>
+            <span style="color:#6b7280">유해인자</span><span>${escapeHtml(_hazard)}</span>
+            <span style="color:#6b7280">보고자</span><span>${escapeHtml(_reporter)}</span>
+            <span style="color:#6b7280">판정기존값</span><span>${escapeHtml(_judgment)}</span>
+          </div>`;
+        row.addEventListener("mouseenter", () => row.style.background = "#eef2ff");
+        row.addEventListener("mouseleave", () => row.style.background = "#f9fafb");
+        row.addEventListener("click", () => {
+          const no = fmtNo(r["연번"]);
+          if (no) {
+            document.getElementById("caseNo").value = no;
+            lookupCase();
+          }
+          overlay.remove();
+        });
+        list.appendChild(row);
+      });
+      panel.appendChild(list);
+    }
+    overlay.appendChild(panel);
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+    document.getElementById("__similarClose").addEventListener("click", () => overlay.remove());
+    document.addEventListener("keydown", function onEsc(e) {
+      if (e.key === "Escape") { overlay.remove(); document.removeEventListener("keydown", onEsc); }
+    });
+  }
   document.querySelectorAll("button.similar").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const field = btn.dataset.field;
-      const parent = btn.parentElement;
-      const input = parent.querySelector("input.search");
-      const keyword = input ? input.value.trim() : "";
-      alert(
-        `[유사사례 검색 — 데모]\n\n` +
-        `검색 항목: ${field}\n` +
-        `키워드: ${keyword || "(비어있음)"}\n\n` +
-        `▶ 다음 단계에서 구현 예정:\n` +
-        `  1) '대상' 시트에서 ${field} 컬럼이 키워드를 포함한 사례 검색\n` +
-        `  2) 보고일 최신순 5개 새 창으로 리스트 표시\n` +
-        `     (보고자/직업력/질환분류/진단명/진단코드/업무관련성/유해인자분류)\n` +
-        `  3) 리스트에서 클릭 → 회의서식 형태로 새 창 표시`
-      );
+      const keyword = getSearchKeyword(btn);
+      console.log("[similar] click", { field, keyword });
+      if (!keyword) { alert("검색 키워드가 비어있음"); return; }
+      const url = `${API_BASE}/search?field=${encodeURIComponent(field)}&keyword=${encodeURIComponent(keyword)}&limit=20`;
+      let data;
+      try {
+        const r = await fetch(url);
+        if (!r.ok) { alert(`검색 실패 (${r.status})`); return; }
+        data = await r.json();
+      } catch (e) { alert(`검색 호출 실패: ${e.message}`); return; }
+      console.log("search result", { field, keyword, count: data.length, data });
+      buildSearchModal(data, field, keyword);
     });
   });
 
-  // ===== 저장 (데모) =====
-  document.querySelector(".actions .save").addEventListener("click", () => {
-    alert(
-      "[저장 — 데모]\n\n" +
-      "현재는 UI 목업 단계라 실제 저장은 동작하지 않습니다.\n" +
-      "(추후 real 버전에서만 서버 연동 예정)"
-    );
+  // ===== 저장 → POST /review =====
+  const REVIEW_ALLOWED = ["질환 및 발생형태", "업무관련성", "유해인자분류", "유해인자"];
+  document.querySelector(".actions .save").addEventListener("click", async () => {
+    console.log("[save] click");
+    const no = document.getElementById("caseNo").value.trim();
+    if (!no) { alert("연번이 비어있음"); return; }
+
+    const updates = {};
+    document.querySelectorAll("select[data-field], textarea[data-field]").forEach(el => {
+      if (!REVIEW_ALLOWED.includes(el.dataset.field)) return;
+      const v = el.value;
+      if (v) updates[el.dataset.field] = v;
+    });
+    console.log("[save] payload", { 연번: no, updates });
+    if (Object.keys(updates).length === 0) { alert("저장할 판정 입력값이 없음"); return; }
+
+    try {
+      console.log("[save] POST", `${API_BASE}/review`);
+      const r = await fetch(`${API_BASE}/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({ 연번: no, updates }),
+      });
+      console.log("[save] status", r.status);
+      const body = await r.json().catch(() => null);
+      console.log("[save] body", body);
+      if (!r.ok) { alert(`저장 실패 (${r.status})\n${JSON.stringify(body)}`); return; }
+      alert(`저장 완료 (row ${body.row})\n${Object.keys(body.updated).join(", ")}`);
+      lookupCase();
+    } catch (e) {
+      console.error("[save] error", e);
+      alert(`저장 호출 실패: ${e.message}`);
+    }
   });
 
   // ===== 입력 초기화 =====
   document.querySelector(".actions .reset").addEventListener("click", () => {
     document.querySelectorAll("select[data-field]").forEach(s => s.value = "");
   });
+
+  // ===== /case/{연번} 조회 → 화면 채우기 =====
+  const API_BASE = "http://127.0.0.1:8765";
+
+  // alias → 실제 시트 헤더명 매핑 (헤더에 줄바꿈/특수문자 포함된 경우 alias 사용)
+  const DISPLAY_ALIAS = {
+    caseno:      "연번",
+    index:       "색인",
+    gender:      "성별",
+    age:         "연령대",
+    name:        "이름",
+    ksic:        "한국산업분류표(KSIC)_제10차",
+    ksco:        "대상자직업\n(한국직업분류표)(KSCO)_제7차",
+    reporttype:  "보고유형",
+    reportdate:  "보고일",
+    hospital:    "보고병원",
+    hospitalid:  "병원등록번호",
+    reporter:    "보고인",
+    diagcode:    "최종진단코드\nKCD질병분류기호)",
+    diagconfirm: "확진여부\n(확진/추정)",
+    diagname:    "최종진단명(의증)",
+    career:      "직업력 및 병력",
+  };
+
+  function fmtVal(v, alias) {
+    if (v == null) return "—";
+    if (typeof v === "string") {
+      if (alias === "reportdate" && v.includes("T")) return v.slice(0, 10);
+      return v;
+    }
+    if (typeof v === "number") {
+      return Number.isInteger(v) ? String(v) : String(v);
+    }
+    return String(v);
+  }
+
+  // 직업코드: KSCO 값의 앞쪽 숫자 prefix 추출 (예: "96112_도소매업" → "96112")
+  function deriveKscoCode(d) {
+    const ksco = d[DISPLAY_ALIAS.ksco] ?? d[DISPLAY_ALIAS.ksic];
+    if (typeof ksco !== "string") return "—";
+    const m = ksco.match(/^\s*([0-9A-Z]+)/);
+    return m ? m[1] : "—";
+  }
+
+  async function lookupCase() {
+    const no = document.getElementById("caseNo").value.trim();
+    if (!no) return;
+    let d;
+    try {
+      const r = await fetch(`${API_BASE}/case/${encodeURIComponent(no)}`);
+      if (!r.ok) { alert(`조회 실패 (${r.status}) — 서버 응답 확인`); return; }
+      d = await r.json();
+    } catch (e) { alert(`서버 호출 실패: ${e.message}`); return; }
+    console.log("case", no, d);
+
+    // 1) data-display 표시 셀 채움
+    document.querySelectorAll("[data-display]").forEach(el => {
+      const alias = el.dataset.display;
+      if (alias === "ksco_code") { el.textContent = deriveKscoCode(d); return; }
+      const hdr = DISPLAY_ALIAS[alias];
+      if (!hdr) return;
+      el.textContent = fmtVal(d[hdr], alias);
+    });
+
+    // 2) data-field 입력 요소 (textarea/select) 자동 채움
+    document.querySelectorAll("[data-field]").forEach(el => {
+      if (!el.matches("textarea, select")) return;
+      const v = d[el.dataset.field];
+      if (v == null) { if (el.tagName === "SELECT") el.value = ""; else el.value = ""; return; }
+      el.value = v;
+      if (el.tagName === "TEXTAREA") autoGrow(el);
+    });
+
+    // 3) 판정 입력: 기존값 영역 갱신
+    document.querySelectorAll(".judgment-row").forEach(row => {
+      const sel = row.querySelector("select[data-field]");
+      const ex = row.querySelector(".existing");
+      if (!sel || !ex) return;
+      const v = d[sel.dataset.field];
+      const s = (v == null ? "" : String(v)).trim();
+      if (s) {
+        ex.classList.remove("empty");
+        ex.innerHTML = '<span class="pill">기존값</span><span class="existing-value"></span>';
+        ex.querySelector(".existing-value").textContent = s;
+      } else {
+        ex.classList.add("empty");
+        ex.innerHTML = "기존 입력값 없음";
+      }
+    });
+  }
+  document.getElementById("btnLookup").addEventListener("click", lookupCase);
+  document.getElementById("caseNo").addEventListener("keydown", e => {
+    if (e.key === "Enter") lookupCase();
+  });
+  // 페이지 로드 시 자동 1회 조회
+  lookupCase();
+
+  // ===== 이전 / 다음 =====
+  function stepCase(delta) {
+    const inp = document.getElementById("caseNo");
+    const cur = parseInt(inp.value, 10);
+    if (isNaN(cur)) return;
+    inp.value = String(cur + delta);
+    lookupCase();
+  }
+  const navBtns = document.querySelectorAll(".toolbar button:not([id])");
+  if (navBtns[0]) navBtns[0].addEventListener("click", () => stepCase(-1));
+  if (navBtns[1]) navBtns[1].addEventListener("click", () => stepCase(+1));
 </script>
 </body>
 </html>

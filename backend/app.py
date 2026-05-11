@@ -26,7 +26,7 @@ CASE_HDR = "연번"
 DATE_HDR = "보고일"  # ← 실제 헤더명 다르면 알려주세요
 
 # /review에서 쓸 수 있는 헤더는 이 3개로 제한
-ALLOWED_REVIEW_KEYS = ("질환 및 발생형태", "업무관련성", "유해인자분류")
+ALLOWED_REVIEW_KEYS = ("질환 및 발생형태", "업무관련성", "유해인자분류", "유해인자")
 
 # Excel COM은 STA — 동시 호출 시 RPC 충돌 가능. 모든 Excel 접근은 이 락으로 직렬화.
 EXCEL_LOCK = threading.Lock()
